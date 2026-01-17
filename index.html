@@ -7,14 +7,10 @@
     <title>Tian's Material Design Blog</title>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@28,400,0,0&family=Roboto+Mono&display=swap" rel="stylesheet">
     
-    <!-- 亮色 Markdown 样式 -->
     <link id="markdown-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-light.min.css">
-    <!-- 暗色 Markdown 样式 -->
     <link id="markdown-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-dark.min.css" disabled>
     
-    <!-- 亮色语法高亮 -->
     <link id="highlight-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
-    <!-- 暗色语法高亮 -->
     <link id="highlight-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" disabled>
     
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -51,6 +47,94 @@
             --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
+        body.theme-green {
+            --color-primary: #2d4a1e;
+            --color-primary-container: #b8f397;
+            --color-on-primary-container: #042100;
+            --color-surface: #fbfcfa;
+            --color-surface-container: #e8ede4;
+            --color-selection: #386a20;
+            --color-ripple: rgba(45, 74, 30, 0.12);
+        }
+        
+        body.theme-purple {
+            --color-primary: #6750a4;
+            --color-primary-container: #eaddff;
+            --color-on-primary-container: #21005d;
+            --color-surface: #fef7ff;
+            --color-surface-container: #f3edf7;
+            --color-selection: #D0BCFF;
+            --color-ripple: rgba(103, 80, 164, 0.12);
+        }
+        
+        body.theme-lime {
+            --color-primary: #546500;
+            --color-primary-container: #d2ee60;
+            --color-on-primary-container: #171e00;
+            --color-surface: #fdfdf5;
+            --color-surface-container: #f1f2e4;
+            --color-selection: #d2ee60;
+            --color-ripple: rgba(84, 101, 0, 0.12);
+        }
+        
+        body.theme-red {
+            --color-primary: #ba1a1a;
+            --color-primary-container: #ffdad6;
+            --color-on-primary-container: #410002;
+            --color-surface: #fffbff;
+            --color-surface-container: #f9ecea;
+            --color-selection: #FFDAD6;
+            --color-ripple: rgba(186, 26, 26, 0.12);
+        }
+        
+        body.theme-cyan {
+            --color-primary: #006a6a;
+            --color-primary-container: #6ff6f6;
+            --color-on-primary-container: #002020;
+            --color-surface: #f4fafb;
+            --color-surface-container: #e9eff0;
+            --color-selection: #6FF6F6;
+            --color-ripple: rgba(0, 106, 106, 0.12);
+        }
+        
+        body.theme-coffee {
+            --color-primary: #8f4c38;
+            --color-primary-container: #ffdbd1;
+            --color-on-primary-container: #3a0b01;
+            --color-surface: #fffbff;
+            --color-surface-container: #f5eeeb;
+            --color-selection: #FFDBD1;
+            --color-ripple: rgba(143, 76, 56, 0.12);
+        }
+        
+        body.theme-pink {
+            --color-primary: #d5839b;
+            --color-primary-container: #ffebf0;
+            --color-on-primary-container: #47001a;
+            --color-surface: #fffbff;
+            --color-surface-container: #fff4f6;
+            --color-selection: #ffebf0;
+            --color-ripple: rgba(213, 131, 155, 0.12);
+        }
+        
+        body.theme-grey {
+            --color-primary: #5d5e61;
+            --color-primary-container: #e1e2e5;
+            --color-on-primary-container: #1a1c1e;
+            --color-surface: #fdfcff;
+            --color-surface-container: #f0f0f3;
+            --color-selection: #e1e2e5;
+        }
+        
+        body.theme-gold {
+            --color-primary: #725c00;
+            --color-primary-container: #ffe082;
+            --color-on-primary-container: #241a00;
+            --color-surface: #fffbff;
+            --color-surface-container: #f6f0db;
+            --color-selection: #ffe082;
+        }
+        
         [data-theme="dark"] {
             --color-primary: #a1c9ff;
             --color-primary-container: #00497e;
@@ -61,6 +145,78 @@
             --color-on-surface-variant: #c2c7cf;
             --color-outline: #8e9199;
             --color-ripple: rgba(161, 201, 255, 0.15);
+        }
+        
+        [data-theme="dark"].theme-green {
+            --color-primary: #9cd67d;
+            --color-primary-container: #1a3700;
+            --color-on-primary-container: #b8f397;
+            --color-surface: #11140e;
+            --color-surface-container: #1d2118;
+        }
+        
+        [data-theme="dark"].theme-purple {
+            --color-primary: #d0bcff;
+            --color-primary-container: #4f378b;
+            --color-on-primary-container: #eaddff;
+            --color-surface: #141218;
+            --color-surface-container: #2b2930;
+        }
+        
+        [data-theme="dark"].theme-lime {
+            --color-primary: #b6d147;
+            --color-primary-container: #3d4d00;
+            --color-on-primary-container: #d2ee60;
+            --color-surface: #121500;
+            --color-surface-container: #23261a;
+        }
+        
+        [data-theme="dark"].theme-red {
+            --color-primary: #ffb4ab;
+            --color-primary-container: #93000a;
+            --color-on-primary-container: #ffdad6;
+            --color-surface: #1a1110;
+            --color-surface-container: #2b2221;
+        }
+        
+        [data-theme="dark"].theme-cyan {
+            --color-primary: #4ddada;
+            --color-primary-container: #005050;
+            --color-on-primary-container: #6ff6f6;
+            --color-surface: #0e1415;
+            --color-surface-container: #212626;
+        }
+        
+        [data-theme="dark"].theme-coffee {
+            --color-primary: #ffb5a0;
+            --color-primary-container: #723523;
+            --color-on-primary-container: #ffdbd1;
+            --color-surface: #1a110f;
+            --color-surface-container: #2c211e;
+        }
+        
+        [data-theme="dark"].theme-pink {
+            --color-primary: #ffb1c8;
+            --color-primary-container: #5d3944;
+            --color-on-primary-container: #ffebf0;
+            --color-surface: #1a1113;
+            --color-surface-container: #251d1f;
+        }
+        
+        [data-theme="dark"].theme-grey {
+            --color-primary: #c5c6c9;
+            --color-primary-container: #45474a;
+            --color-on-primary-container: #e1e2e5;
+            --color-surface: #1a1c1e;
+            --color-surface-container: #2e3032;
+        }
+        
+        [data-theme="dark"].theme-gold {
+            --color-primary: #e8c34a;
+            --color-primary-container: #554500;
+            --color-on-primary-container: #ffe082;
+            --color-surface: #171308;
+            --color-surface-container: #272215;
         }
         
         ::selection {
@@ -609,6 +765,58 @@
             opacity: 0.5;
             padding: 20px;
         }
+        
+        .theme-selector-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 8px 16px;
+        }
+        
+        .theme-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-round);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .theme-circle.active {
+            border-color: var(--color-primary);
+            padding: 3px;
+        }
+        
+        .theme-circle .check-icon {
+            font-size: 18px;
+            color: white;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+        }
+        
+        .theme-circle.active .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .color-dot {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius-round);
+            position: absolute;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .theme-circle.active .color-dot {
+            width: 24px;
+            height: 24px;
+        }
     </style>
 </head>
 
@@ -630,6 +838,50 @@
                     <span>深色模式</span>
                 </div>
                 <div id="theme-status" class="item-status">已关闭</div>
+            </div>
+            
+            <div class="drawer-section-title">色彩主题</div>
+            <div class="theme-selector-group" id="theme-circles-container">
+                <div class="theme-circle ripple-container active" data-theme="" onclick="applyThemeColor('', event)">
+                    <div class="color-dot" style="background: #0061a4;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-green" onclick="applyThemeColor('theme-green', event)">
+                    <div class="color-dot" style="background: #2d4a1e;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-purple" onclick="applyThemeColor('theme-purple', event)">
+                    <div class="color-dot" style="background: #6750a4;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-lime" onclick="applyThemeColor('theme-lime', event)">
+                    <div class="color-dot" style="background: #CDFF00;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-red" onclick="applyThemeColor('theme-red', event)">
+                    <div class="color-dot" style="background: #ba1a1a;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-cyan" onclick="applyThemeColor('theme-cyan', event)">
+                    <div class="color-dot" style="background: #006a6a;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-coffee" onclick="applyThemeColor('theme-coffee', event)">
+                    <div class="color-dot" style="background: #8f4c38;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-pink" onclick="applyThemeColor('theme-pink', event)">
+                    <div class="color-dot" style="background: #d5839b;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-grey" onclick="applyThemeColor('theme-grey', event)">
+                    <div class="color-dot" style="background: #5d5e61;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-gold" onclick="applyThemeColor('theme-gold', event)">
+                    <div class="color-dot" style="background: #c5a000;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
             </div>
             
             <div class="drawer-section-title">发现</div>
@@ -695,7 +947,7 @@
             <div class="m3-card contact-card ripple-container" onclick="handleRipple(event); window.location.href='https://github.com/TTQWNTian/MaterialDesignBlog'">
                 <span class="material-symbols-outlined">code</span>
                 <div>
-                    <div class="contact-info-title">开源链接</div>
+                    <div class="contact-info-title">开源地址</div>
                     <div class="contact-info-sub">MaterialDesignBlog</div>
                 </div>
             </div>
@@ -797,9 +1049,30 @@
             document.getElementById('markdown-dark').disabled = newTheme === 'light';
             document.getElementById('highlight-light').disabled = newTheme === 'dark';
             document.getElementById('highlight-dark').disabled = newTheme === 'light';
+            localStorage.setItem('m3-theme-mode', newTheme);
             setTimeout(() => {
                 document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
             }, 50);
+        }
+        
+        function applyThemeColor(themeClass, e) {
+            if (e) handleRipple(e);
+            
+            const themes = ['theme-green', 'theme-purple', 'theme-lime', 'theme-red', 'theme-cyan', 'theme-coffee', 'theme-pink', 'theme-grey', 'theme-gold'];
+            document.body.classList.remove(...themes);
+            
+            if (themeClass) {
+                document.body.classList.add(themeClass);
+            }
+            
+            document.querySelectorAll('.theme-circle').forEach(circle => {
+                circle.classList.remove('active');
+                if (circle.getAttribute('data-theme') === themeClass) {
+                    circle.classList.add('active');
+                }
+            });
+            
+            localStorage.setItem('m3-theme-color', themeClass);
         }
         
         function randomBlog() {
@@ -864,6 +1137,11 @@
         }
         
         async function loadData() {
+            const savedColor = localStorage.getItem('m3-theme-color');
+            const savedMode = localStorage.getItem('m3-theme-mode');
+            if (savedColor !== null) applyThemeColor(savedColor);
+            if (savedMode === 'dark') toggleTheme();
+            
             try {
                 const res = await fetch('./blogs/list.json');
                 allBlogs = await res.json();
