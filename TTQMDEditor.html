@@ -1,0 +1,2219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TTQ MD Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@28,400,0,0&family=Roboto+Mono&display=swap" rel="stylesheet">
+    
+    <link id="markdown-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-light.min.css">
+    <link id="markdown-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-dark.min.css" disabled>
+    
+    <link id="highlight-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link id="highlight-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" disabled>
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <style>
+        :root {
+            --color-primary: #0061a4;
+            --color-primary-container: #d1e4ff;
+            --color-on-primary-container: #001d36;
+            --color-surface: #fdfbff;
+            --color-surface-container: #f3f4f9;
+            --color-on-surface: #1B1C1D;
+            --color-on-surface-variant: #44474e;
+            --color-outline: #73777f;
+            --color-selection: #6D9AE3;
+            --color-scrim: rgba(0, 0, 0, 0.4);
+            --color-ripple: rgba(0, 97, 164, 0.12);
+            
+            --radius-s: 8px;
+            --radius-m: 12px;
+            --radius-l: 16px;
+            --radius-xl: 24px;
+            --radius-full: 28px;
+            --radius-round: 50%;
+            
+            --top-bar-h: 64px;
+            --bottom-nav-h: 80px;
+            --search-bar-h: 56px;
+            --drawer-width: 300px;
+            --space-m: 16px;
+            --space-l: 24px;
+            
+            --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.theme-green {
+            --color-primary: #2d4a1e;
+            --color-primary-container: #b8f397;
+            --color-on-primary-container: #042100;
+            --color-surface: #fbfcfa;
+            --color-surface-container: #e8ede4;
+            --color-selection: #386a20;
+            --color-ripple: rgba(45, 74, 30, 0.12);
+        }
+        
+        body.theme-purple {
+            --color-primary: #6750a4;
+            --color-primary-container: #eaddff;
+            --color-on-primary-container: #21005d;
+            --color-surface: #fef7ff;
+            --color-surface-container: #f3edf7;
+            --color-selection: #D0BCFF;
+            --color-ripple: rgba(103, 80, 164, 0.12);
+        }
+        
+        body.theme-lime {
+            --color-primary: #546500;
+            --color-primary-container: #d2ee60;
+            --color-on-primary-container: #171e00;
+            --color-surface: #fdfdf5;
+            --color-surface-container: #f1f2e4;
+            --color-selection: #d2ee60;
+            --color-ripple: rgba(84, 101, 0, 0.12);
+        }
+        
+        body.theme-red {
+            --color-primary: #ba1a1a;
+            --color-primary-container: #ffdad6;
+            --color-on-primary-container: #410002;
+            --color-surface: #fffbff;
+            --color-surface-container: #f9ecea;
+            --color-selection: #FFDAD6;
+            --color-ripple: rgba(186, 26, 26, 0.12);
+        }
+        
+        body.theme-cyan {
+            --color-primary: #006a6a;
+            --color-primary-container: #6ff6f6;
+            --color-on-primary-container: #002020;
+            --color-surface: #f4fafb;
+            --color-surface-container: #e9eff0;
+            --color-selection: #6FF6F6;
+            --color-ripple: rgba(0, 106, 106, 0.12);
+        }
+        
+        body.theme-coffee {
+            --color-primary: #8f4c38;
+            --color-primary-container: #ffdbd1;
+            --color-on-primary-container: #3a0b01;
+            --color-surface: #fffbff;
+            --color-surface-container: #f5eeeb;
+            --color-selection: #FFDBD1;
+            --color-ripple: rgba(143, 76, 56, 0.12);
+        }
+        
+        body.theme-pink {
+            --color-primary: #d5839b;
+            --color-primary-container: #ffebf0;
+            --color-on-primary-container: #47001a;
+            --color-surface: #fffbff;
+            --color-surface-container: #fff4f6;
+            --color-selection: #ffebf0;
+            --color-ripple: rgba(213, 131, 155, 0.12);
+        }
+        
+        body.theme-grey {
+            --color-primary: #5d5e61;
+            --color-primary-container: #e1e2e5;
+            --color-on-primary-container: #1a1c1e;
+            --color-surface: #fdfcff;
+            --color-surface-container: #f0f0f3;
+            --color-selection: #e1e2e5;
+        }
+        
+        body.theme-gold {
+            --color-primary: #725c00;
+            --color-primary-container: #ffe082;
+            --color-on-primary-container: #241a00;
+            --color-surface: #fffbff;
+            --color-surface-container: #f6f0db;
+            --color-selection: #ffe082;
+        }
+        
+        [data-theme="dark"] {
+            --color-primary: #a1c9ff;
+            --color-primary-container: #00497e;
+            --color-on-primary-container: #d1e4ff;
+            --color-surface: #1a1c1e;
+            --color-surface-container: #2f3033;
+            --color-on-surface: #e2e2e6;
+            --color-on-surface-variant: #c2c7cf;
+            --color-outline: #8e9199;
+            --color-ripple: rgba(161, 201, 255, 0.15);
+        }
+        
+        [data-theme="dark"].theme-green {
+            --color-primary: #9cd67d;
+            --color-primary-container: #1a3700;
+            --color-on-primary-container: #b8f397;
+            --color-surface: #11140e;
+            --color-surface-container: #1d2118;
+        }
+        
+        [data-theme="dark"].theme-purple {
+            --color-primary: #d0bcff;
+            --color-primary-container: #4f378b;
+            --color-on-primary-container: #eaddff;
+            --color-surface: #141218;
+            --color-surface-container: #2b2930;
+        }
+        
+        [data-theme="dark"].theme-lime {
+            --color-primary: #b6d147;
+            --color-primary-container: #3d4d00;
+            --color-on-primary-container: #d2ee60;
+            --color-surface: #121500;
+            --color-surface-container: #23261a;
+        }
+        
+        [data-theme="dark"].theme-red {
+            --color-primary: #ffb4ab;
+            --color-primary-container: #93000a;
+            --color-on-primary-container: #ffdad6;
+            --color-surface: #1a1110;
+            --color-surface-container: #2b2221;
+        }
+        
+        [data-theme="dark"].theme-cyan {
+            --color-primary: #4ddada;
+            --color-primary-container: #005050;
+            --color-on-primary-container: #6ff6f6;
+            --color-surface: #0e1415;
+            --color-surface-container: #212626;
+        }
+        
+        [data-theme="dark"].theme-coffee {
+            --color-primary: #ffb5a0;
+            --color-primary-container: #723523;
+            --color-on-primary-container: #ffdbd1;
+            --color-surface: #1a110f;
+            --color-surface-container: #2c211e;
+        }
+        
+        [data-theme="dark"].theme-pink {
+            --color-primary: #ffb1c8;
+            --color-primary-container: #5d3944;
+            --color-on-primary-container: #ffebf0;
+            --color-surface: #1a1113;
+            --color-surface-container: #251d1f;
+        }
+        
+        [data-theme="dark"].theme-grey {
+            --color-primary: #c5c6c9;
+            --color-primary-container: #45474a;
+            --color-on-primary-container: #e1e2e5;
+            --color-surface: #1a1c1e;
+            --color-surface-container: #2e3032;
+        }
+        
+        [data-theme="dark"].theme-gold {
+            --color-primary: #e8c34a;
+            --color-primary-container: #554500;
+            --color-on-primary-container: #ffe082;
+            --color-surface: #171308;
+            --color-surface-container: #272215;
+        }
+        
+        ::selection {
+            background-color: var(--color-selection);
+            color: var(--color-on-surface);
+        }
+        
+        ::-moz-selection {
+            background-color: var(--color-selection);
+            color: var(--color-on-surface);
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+            transition: .4s;
+        }
+        
+        body {
+            user-select: none;
+            background: var(--color-surface);
+            color: var(--color-on-surface);
+            font-family: 'Google Sans', sans-serif;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .ripple-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .icon-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-round);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--color-on-surface);
+        }
+        
+        .m3-card {
+            background: var(--color-surface-container);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+        
+        .m3-card:active {
+            transform: scale(0.98);
+        }
+        
+        .card-meta {
+            font-size: 12px;
+            color: var(--color-primary);
+            margin-bottom: 6px;
+        }
+        
+        .card-title {
+            font-weight: 500;
+            font-size: 18px;
+        }
+        
+        .card-desc {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+        
+        #nav-scrim {
+            position: fixed;
+            inset: 0;
+            background: var(--color-scrim);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        #nav-scrim.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #nav-drawer {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--drawer-width);
+            background: var(--color-surface);
+            z-index: 2001;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #nav-drawer.open {
+            transform: translateX(0);
+        }
+        
+        .drawer-header {
+            padding: 40px 24px 24px;
+            background: var(--color-surface-container);
+            border-radius: 0 0 var(--radius-xl) 0;
+        }
+        
+        .drawer-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        .drawer-avatar .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .drawer-brand {
+            font-size: 20px;
+            font-weight: 500;
+        }
+        
+        .stat-text {
+            font-size: 14px;
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+        
+        .drawer-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+        
+        .drawer-section-title {
+            padding: 16px 16px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .drawer-item {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+        
+        .drawer-item:hover {
+            background: var(--color-surface-container);
+        }
+        
+        .drawer-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .item-status {
+            font-size: 12px;
+            opacity: 0.5;
+        }
+        
+        .chevron-icon {
+            font-size: 18px;
+            opacity: 0.3;
+        }
+        
+        .top-bar {
+            height: var(--top-bar-h);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        
+        .app-title {
+            flex: 1;
+            font-size: 22px;
+            font-weight: 400;
+        }
+        
+        .search-area {
+            margin: 4px 16px 12px;
+            background: var(--color-surface-container);
+            border-radius: var(--radius-full);
+            height: var(--search-bar-h);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+        
+        .search-area input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 16px;
+            color: inherit;
+            font-family: inherit;
+        }
+        
+        .view-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .view {
+            position: absolute;
+            inset: 0;
+            padding: 0 var(--space-m) var(--space-m);
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .view.active {
+            display: block;
+            animation: viewFade 0.25s cubic-bezier(0, 0, 0.2, 1);
+        }
+        
+        @keyframes viewFade {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .new-entry {
+            animation: cardAppear 0.4s cubic-bezier(0, 0, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(24px);
+        }
+        
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .bottom-nav {
+            height: var(--bottom-nav-h);
+            background: var(--color-surface-container);
+            display: flex;
+            align-items: center;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 4px;
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+        
+        .nav-indicator {
+            width: 64px;
+            height: 32px;
+            border-radius: var(--radius-l);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-item.active .nav-indicator {
+            background: var(--color-primary-container);
+            color: var(--color-on-primary-container);
+        }
+        
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .ripple-span {
+            position: absolute;
+            background: var(--color-ripple);
+            border-radius: var(--radius-round);
+            transform: scale(0);
+            animation: ripple-anim 0.5s ease-out;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple-anim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .theme-selector-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 8px 16px;
+        }
+        
+        .theme-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-round);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .theme-circle.active {
+            border-color: var(--color-primary);
+            padding: 3px;
+        }
+        
+        .theme-circle .check-icon {
+            font-size: 18px;
+            color: white;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+        }
+        
+        .theme-circle.active .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .color-dot {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius-round);
+            position: absolute;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .theme-circle.active .color-dot {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* --- 编辑器样式 --- */
+        #detail-panel {
+            position: fixed;
+            inset: 0;
+            background: var(--color-surface);
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.05, 0.7, 0.1, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #detail-panel.open {
+            transform: translateY(0);
+        }
+        
+        #editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        #md-input {
+            flex: 1;
+            border: none;
+            background: var(--color-surface);
+            padding: 24px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 16px;
+            outline: none;
+            resize: none;
+            color: var(--color-on-surface);
+            line-height: 1.6;
+            overflow-y: auto;
+        }
+        
+        #md-input::placeholder {
+            color: var(--color-on-surface-variant);
+            opacity: 0.7;
+            font-style: italic;
+        }
+        
+        #editor-toolbar {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            gap: 8px;
+            background: var(--color-surface-container);
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            min-height: 56px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .toolbar-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-round);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--color-on-surface);
+            flex-shrink: 0;
+        }
+        
+        .toolbar-btn:hover {
+            background: var(--color-surface);
+        }
+        
+        .toolbar-btn span {
+            font-size: 20px;
+        }
+        
+        #md-preview {
+            display: none;
+            overflow-y: auto;
+            padding: 24px;
+            background: var(--color-surface);
+            flex: 1;
+            color: var(--color-on-surface);
+        }
+        
+        .markdown-body {
+            font-family: inherit !important;
+            font-size: 16px !important;
+            line-height: 26px !important;
+            background: transparent !important;
+        }
+        
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {
+            color: var(--color-primary) !important;
+        }
+        
+        .markdown-body a {
+            color: var(--color-primary) !important;
+        }
+        
+        .markdown-body pre {
+            user-select: auto !important;
+            border-radius: var(--radius-s) !important;
+            padding: 0 !important;
+            background-color: var(--color-surface-container) !important;
+        }
+        
+        .markdown-body code {
+            font-family: 'Roboto Mono', monospace !important;
+            font-size: 16px !important;
+            padding: 2px 4px !important;
+        }
+        
+        .markdown-body :not(pre)>code {
+            background-color: var(--color-surface-container) !important;
+        }
+        
+        .markdown-body img {
+            margin: 12px 0 !important;
+            border-radius: var(--radius-xl) !important;
+            max-width: 100%;
+        }
+        
+        #bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-surface-container);
+            border-radius: 28px 28px 0 0;
+            z-index: 3000;
+            padding: 24px;
+            transform: translateY(100%);
+            transition: 0.3s cubic-bezier(0, 0, 0.2, 1);
+        }
+        
+        #bottom-sheet.open {
+            transform: translateY(0);
+        }
+        
+        .sheet-item {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            border-radius: 16px;
+            padding: 0 16px;
+            margin-bottom: 8px;
+        }
+        
+        .sheet-item:active {
+            background: var(--color-primary-container);
+        }
+        
+        .sheet-title {
+            margin-bottom: 16px;
+            font-weight: 500;
+            font-size: 18px;
+            color: var(--color-on-surface);
+        }
+        
+        #category-bar {
+            padding: 12px 16px 4px;
+            background: var(--color-surface);
+        }
+        
+        .category-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .category-tag {
+            padding: 6px 16px;
+            background: var(--color-surface-container);
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .category-tag.active {
+            background: var(--color-primary-container);
+            color: var(--color-on-primary-container);
+            border-color: transparent;
+        }
+        
+        .doc-preview {
+            font-size: 14px;
+            color: var(--color-on-surface-variant);
+            line-height: 1.4;
+            margin-top: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        #editor-header-title {
+            flex: 1;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--color-on-surface);
+        }
+        
+        /* 对话框 */
+        .m3-dialog-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--color-scrim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            padding: 20px;
+        }
+        
+        .m3-dialog {
+            background: var(--color-surface);
+            border-radius: 28px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: dialogEnter 0.3s cubic-bezier(0, 0, 0.2, 1);
+        }
+        
+        @keyframes dialogEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .m3-dialog-title {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--color-on-surface);
+        }
+        
+        .m3-input {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            background: var(--color-surface);
+            border-radius: var(--radius-full);
+            font-size: 16px;
+            color: var(--color-on-surface);
+            outline: none;
+            font-family: 'Google Sans', sans-serif;
+            margin: 5px 0;
+        }
+        
+        .m3-input:focus {
+            outline: 2px solid var(--color-primary);
+        }
+        
+        .m3-dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        .m3-button {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-full);
+            font-family: 'Google Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            min-width: 64px;
+        }
+        
+        .m3-button-text {
+            color: var(--color-on-surface-variant);
+        }
+        
+        .m3-button-primary {
+            background: var(--color-primary-container);
+            color: var(--color-on-primary-container);
+        }
+        
+        /* --- 关于界面样式 --- */
+        .about-container {
+            padding: 8px 0;
+        }
+        
+        .about-section {
+            background: var(--color-surface-container);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+        
+        .about-section-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .about-hero {
+            text-align: center;
+            padding: 32px 16px;
+        }
+        
+        .about-hero img {
+            width: 80px;
+            height: 80px;
+            border-radius: 22px;
+            margin-bottom: 16px;
+        }
+        
+        .about-hero h2 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+        
+        .about-hero p {
+            font-size: 14px;
+            color: var(--color-on-surface-variant);
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+        }
+        
+        .feature-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--color-primary-container);
+            color: var(--color-on-primary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .feature-content h4 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .feature-content p {
+            font-size: 13px;
+            color: var(--color-on-surface-variant);
+            line-height: 1.4;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-size: 14px;
+            color: var(--color-on-surface-variant);
+        }
+        
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="nav-scrim" onclick="handleScrimClick()"></div>
+    <aside id="nav-drawer">
+        <div class="drawer-header">
+            <div class="drawer-avatar">
+                <img src="https://tian.html-5.me/favicon.png" alt="Tian" class="avatar-img">
+            </div>
+            <div class="drawer-brand">TTQ MD Editor</div>
+            <div id="stat-count" class="stat-text">正在统计文档...</div>
+        </div>
+        <div class="drawer-content">
+            <div class="drawer-section-title">偏好设置</div>
+            <div class="drawer-item ripple-container" onclick="handleRipple(event); toggleTheme()">
+                <div class="drawer-item-left">
+                    <span class="material-symbols-outlined">dark_mode</span>
+                    <span>深色模式</span>
+                </div>
+                <div id="theme-status" class="item-status">已关闭</div>
+            </div>
+            <div class="theme-selector-group" id="theme-circles-container">
+                <div class="theme-circle ripple-container active" data-theme="" onclick="applyThemeColor('', event)">
+                    <div class="color-dot" style="background: #0061a4;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-green" onclick="applyThemeColor('theme-green', event)">
+                    <div class="color-dot" style="background: #2d4a1e;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-purple" onclick="applyThemeColor('theme-purple', event)">
+                    <div class="color-dot" style="background: #6750a4;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-lime" onclick="applyThemeColor('theme-lime', event)">
+                    <div class="color-dot" style="background: #CDFF00;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-red" onclick="applyThemeColor('theme-red', event)">
+                    <div class="color-dot" style="background: #ba1a1a;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-cyan" onclick="applyThemeColor('theme-cyan', event)">
+                    <div class="color-dot" style="background: #006a6a;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-coffee" onclick="applyThemeColor('theme-coffee', event)">
+                    <div class="color-dot" style="background: #8f4c38;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-pink" onclick="applyThemeColor('theme-pink', event)">
+                    <div class="color-dot" style="background: #d5839b;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-grey" onclick="applyThemeColor('theme-grey', event)">
+                    <div class="color-dot" style="background: #5d5e61;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+                <div class="theme-circle ripple-container" data-theme="theme-gold" onclick="applyThemeColor('theme-gold', event)">
+                    <div class="color-dot" style="background: #c5a000;"></div>
+                    <span class="material-symbols-outlined check-icon">check</span>
+                </div>
+            </div>
+            
+            <div class="drawer-section-title">发现</div>
+            <div class="drawer-item ripple-container" onclick="handleRipple(event); randomDoc()">
+                <div class="drawer-item-left">
+                    <span class="material-symbols-outlined">shuffle</span>
+                    <span>随机漫游</span>
+                </div>
+                <span class="material-symbols-outlined chevron-icon">chevron_right</span>
+            </div>
+            
+            <div class="drawer-section-title">关于</div>
+            <div class="drawer-item ripple-container" onclick="handleRipple(event); switchView('about', null, '关于')">
+                <div class="drawer-item-left">
+                    <span class="material-symbols-outlined">info</span>
+                    <span>版本信息</span>
+                </div>
+                <span class="item-status">v0.0.1</span>
+            </div>
+        </div>
+    </aside>
+    
+    <div class="top-bar">
+        <button class="icon-btn ripple-container" onclick="handleRipple(event); toggleDrawer(true)">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div id="app-title" class="app-title">我的文档</div>
+        <button class="icon-btn ripple-container" onclick="handleRipple(event); createNewDoc()">
+            <span class="material-symbols-outlined">add</span>
+        </button>
+    </div>
+    
+    <div class="search-area" id="search-bar">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" id="searchInput" placeholder="搜索文档..." oninput="runSearch()">
+    </div>
+    
+    <div id="category-bar">
+        <div class="category-scroll" id="category-tags"></div>
+    </div>
+    
+    <div class="view-container">
+        <div id="view-home" class="view active">
+            <div id="doc-list"></div>
+        </div>
+        
+        <div id="view-about" class="view">
+            <div class="about-container">
+                <div class="about-hero">
+                    <img src="https://tian.html-5.me/favicon.png" alt="TTQ Logo">
+                    <h2>TTQ MD Editor</h2>
+                    <p>简洁 · 安全 · 便捷</p>
+                </div>
+                
+                <!-- GitHub 同步配置 -->
+                <div class="about-section">
+                    <div class="about-section-title"><span class="material-symbols-outlined">cloud_sync</span> GitHub 同步配置</div>
+                    <p style="font-size:12px; margin-bottom:10px; opacity:0.7;">配置 Token 后可在文档列表长按同步到云端</p>
+                    <input type="password" id="git-token" class="m3-input" placeholder="GitHub个人访问令牌">
+                    <input type="text" id="git-repo" class="m3-input" placeholder="用户名/仓库名">
+                    <input type="text" id="git-folder" class="m3-input" placeholder="文件夹路径（可选）">
+                    <button class="m3-button m3-button-primary" style="width:100%;margin-top:10px;" onclick="saveGitSettings()">保存配置</button>
+                </div>
+                
+                <div class="about-section">
+                    <div class="about-section-title">主要功能</div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon-box"><span class="material-symbols-outlined">edit_note</span></div>
+                        <div class="feature-content">
+                            <h4>实时预览</h4>
+                            <p>采用 Marked.js 驱动，支持 GitHub Markdown 语法。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon-box"><span class="material-symbols-outlined">palette</span></div>
+                        <div class="feature-content">
+                            <h4>Material 3 设计</h4>
+                            <p>跟随 Google 最新的设计规范，支持多达 10 种动态主题色切换。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon-box"><span class="material-symbols-outlined">security</span></div>
+                        <div class="feature-content">
+                            <h4>本地化存储</h4>
+                            <p>文档仅保存在您的浏览器本地存储中，保护您的隐私。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon-box"><span class="material-symbols-outlined">cloud_upload</span></div>
+                        <div class="feature-content">
+                            <h4>GitHub 同步</h4>
+                            <p>支持将文档一键同步到 GitHub 仓库。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <div class="about-section-title">版本信息</div>
+                    <div class="info-row">
+                        <span class="info-label">当前版本</span>
+                        <span class="info-value">v0.0.1</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">开发者</span>
+                        <span onclick="window.location.href='https://github.com/TTQWNTian'" class="info-value">Tian</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">许可协议</span>
+                        <span class="info-value">zlib License</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="detail-panel">
+        <div class="top-bar">
+            <button class="icon-btn ripple-container" onclick="handleRipple(event); closeEditor()">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div id="editor-header-title">编辑文档</div>
+            <button class="icon-btn ripple-container" id="preview-btn" onclick="handleRipple(event); togglePreview()">
+                <span class="material-symbols-outlined">visibility</span>
+            </button>
+            <button class="icon-btn ripple-container" onclick="handleRipple(event); exportCurrentDoc()">
+                <span class="material-symbols-outlined">download</span>
+            </button>
+            <button class="icon-btn ripple-container" onclick="handleRipple(event); saveCurrentDoc()">
+                <span class="material-symbols-outlined">save</span>
+            </button>
+        </div>
+        
+        <div id="editor-container">
+            <textarea id="md-input" placeholder="开始记录你的灵感..."></textarea>
+            <article id="md-preview" class="markdown-body"></article>
+        </div>
+        
+        <div id="editor-toolbar">
+            <button class="toolbar-btn ripple-container" onclick="insertText('# ', event)">
+                <span style="font-weight:bold; font-size:18px;">H1</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('## ', event)">
+                <span style="font-weight:bold; font-size:16px;">H2</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('### ', event)">
+                <span style="font-weight:bold; font-size:14px;">H3</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('**', event)">
+                <span style="font-weight:bold;">B</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('- ', event)">
+                <span class="material-symbols-outlined">list</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('1. ', event)">
+                <span class="material-symbols-outlined">format_list_numbered</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('[链接](url)', event)">
+                <span class="material-symbols-outlined">link</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('![图片](url)', event)">
+                <span class="material-symbols-outlined">image</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('```\n\n```', event)">
+                <span class="material-symbols-outlined">code</span>
+            </button>
+            <button class="toolbar-btn ripple-container" onclick="insertText('> ', event)">
+                <span class="material-symbols-outlined">format_quote</span>
+            </button>
+        </div>
+    </div>
+    
+    <div id="bottom-sheet">
+        <div class="sheet-title" id="sheet-title">文档操作</div>
+        <div class="sheet-item" onclick="syncToGithubFromSheet()" style="color: var(--color-primary);">
+            <span class="material-symbols-outlined">cloud_upload</span>同步到 GitHub
+        </div>
+        <div class="sheet-item" onclick="renameDoc()">
+            <span class="material-symbols-outlined">edit</span>重命名
+        </div>
+        <div class="sheet-item" onclick="changeCategory()">
+            <span class="material-symbols-outlined">category</span>修改分类
+        </div>
+        <div class="sheet-item" onclick="deleteDoc()" style="color: #ba1a1a;">
+            <span class="material-symbols-outlined">delete</span>删除
+        </div>
+    </div>
+    
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchView('home', this, '首页')">
+            <div class="nav-indicator ripple-container">
+                <span class="material-symbols-outlined">home</span>
+            </div>
+            <span class="nav-label">首页</span>
+        </div>
+        <div class="nav-item" onclick="switchView('about', this, '关于')">
+            <div class="nav-indicator ripple-container">
+                <span class="material-symbols-outlined">info</span>
+            </div>
+            <span class="nav-label">关于</span>
+        </div>
+    </nav>
+    
+    <script>
+        // --- 数据存储 ---
+        let docs = JSON.parse(localStorage.getItem('tian_md_docs')) || [
+        {
+            id: "1",
+            title: '欢迎使用 TTQ MD',
+            content: '# 欢迎使用 TTQ MD 编辑器\n\n这是一个由[Tian](https://github.com/TTQWNTian)制作，基于 Material Design 3 样式的 Markdown 编辑器。\n\n点击右上角"+"按钮创建新文档，或点击现有文档卡片进行编辑。\n\n### 功能特色\n- **多主题支持**：多种颜色主题和深色模式\n- **本地存储**：所有文档保存在浏览器本地\n- **全文搜索**：快速查找文档内容\n- **分类管理**：按标签组织文档\n- **GitHub 同步**：支持备份到云端指定文件夹（需配置）\n\n## Markdown 基础语法\n\n### 标题\n```\n# 一级标题\n## 二级标题\n### 三级标题\n```\n\n### 强调\n```\n**粗体文本**\n*斜体文本*\n~~删除线文本~~\n```\n\n### 列表\n```\n- 无序列表项\n- 另一个列表项\n\n1. 有序列表项\n2. 第二个项目\n```\n\n### 代码\n```javascript\n// 代码块\nfunction hello() {\n    console.log("Hello, Markdown!");\n}\n```\n\n开始创作吧！',
+            category: '指南',
+            date: '2026-1-18',
+            updated: Date.now()
+        }];
+        
+        // GitHub 配置存储
+        let gitConfig = JSON.parse(localStorage.getItem('tian_md_git')) || {
+            token: '',
+            repo: '',
+            folder: ''
+        };
+        
+        let currentDocId = null;
+        let selectedDocId = null;
+        let currentCategory = '全部';
+        let pressTimer = null;
+        let isPreviewMode = false;
+        
+        // --- GitHub 同步功能（支持指定文件夹） ---
+        function saveGitSettings() {
+            gitConfig.token = document.getElementById('git-token').value.trim();
+            gitConfig.repo = document.getElementById('git-repo').value.trim();
+            gitConfig.folder = document.getElementById('git-folder').value.trim();
+            
+            localStorage.setItem('tian_md_git', JSON.stringify(gitConfig));
+            showToast('GitHub 配置已保存');
+        }
+        
+        async function syncToGithubFromSheet() {
+            if (!gitConfig.token || !gitConfig.repo) {
+                showToast('请先在"关于"页面配置 GitHub');
+                closeActionSheet();
+                switchView('about', null, '关于');
+                return;
+            }
+            
+            const doc = docs.find(d => d.id.toString() === selectedDocId);
+            if (!doc) {
+                closeActionSheet();
+                return;
+            }
+            
+            showToast('正在上传到 GitHub...');
+            
+            const cleanFileName = doc.title.replace(/[\/\\?%*:|"<>]/g, '-').replace(/\s+/g, '-');
+            
+            let folderPath = (gitConfig.folder || '').trim();
+            folderPath = folderPath.replace(/^\/+|\/+$/g, '');
+            
+            // 如果有文件夹路径，先检查文件夹是否存在
+            if (folderPath) {
+                const folderExists = await checkFolderExists(folderPath);
+                if (!folderExists) {
+                    showToast(`错误: GitHub仓库中没有"${folderPath}"文件夹`);
+                    closeActionSheet();
+                    return;
+                }
+            }
+            
+            const fullPath = folderPath ? `${folderPath}/${cleanFileName}.md` : `${cleanFileName}.md`;
+            
+            const url = `https://api.github.com/repos/${gitConfig.repo}/contents/${fullPath}`;
+            
+            try {
+                let sha = null;
+                const getRes = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${gitConfig.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (getRes.ok) {
+                    const data = await getRes.json();
+                    sha = data.sha;
+                } else if (getRes.status !== 404) {
+                    const errorData = await getRes.json();
+                    throw new Error(`检查文件失败: ${getRes.status} - ${errorData.message || 'Unknown error'}`);
+                }
+                
+                const contentUtf8 = unescape(encodeURIComponent(doc.content));
+                const contentBase64 = btoa(contentUtf8);
+                
+                const putRes = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${gitConfig.token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({
+                        message: `Sync from TTQ MD: ${doc.title}`,
+                        content: contentBase64,
+                        sha: sha || undefined
+                    })
+                });
+                
+                const result = await putRes.json();
+                
+                if (putRes.ok) {
+                    showToast('GitHub 同步成功');
+                    
+                    // 同步成功后更新list.json文件
+                    // 可把false改为true启动功能
+                    const ENABLE_LIST_JSON_UPDATE = false;
+                    if (ENABLE_LIST_JSON_UPDATE) {
+                        await updateGitHubListJson(doc, cleanFileName);
+                    }
+                } else {
+                    console.error('同步失败:', result);
+                    showToast('同步失败: ' + (result.message || putRes.status));
+                }
+            } catch (e) {
+                console.error('同步错误:', e);
+                showToast('错误: ' + (e.message || '网络错误或配置错误'));
+            }
+            
+            closeActionSheet();
+        }
+        
+        // 检查文件夹是否存在的函数
+        async function checkFolderExists(folderPath) {
+            try {
+                // 检查文件夹中的任意一个文件（这里检查list.json，因为我们需要它）
+                const listJsonPath = folderPath ? `${folderPath}/list.json` : 'list.json';
+                const listUrl = `https://api.github.com/repos/${gitConfig.repo}/contents/${listJsonPath}`;
+                
+                const listRes = await fetch(listUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${gitConfig.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (listRes.ok) {
+                    // 如果list.json存在，说明文件夹存在
+                    return true;
+                } else if (listRes.status === 404) {
+                    // 如果list.json不存在，尝试检查文件夹本身
+                    const folderUrl = `https://api.github.com/repos/${gitConfig.repo}/contents/${folderPath}`;
+                    const folderRes = await fetch(folderUrl, {
+                        headers: {
+                            'Authorization': `Bearer ${gitConfig.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    
+                    if (folderRes.ok) {
+                        return true;
+                    } else if (folderRes.status === 404) {
+                        // 文件夹不存在
+                        return false;
+                    } else {
+                        // 其他错误
+                        const errorData = await folderRes.json();
+                        console.error('检查文件夹失败:', errorData);
+                        return false;
+                    }
+                } else {
+                    // 其他错误
+                    const errorData = await listRes.json();
+                    console.error('检查list.json失败:', errorData);
+                    return false;
+                }
+            } catch (error) {
+                console.error('检查文件夹存在时出错:', error);
+                return false;
+            }
+        }
+        
+        // --- 更新GitHub上的list.json文件 ---
+        async function updateGitHubListJson(doc, fileName) {
+            try {
+                let folderPath = (gitConfig.folder || '').trim();
+                folderPath = folderPath.replace(/^\/+|\/+$/g, '');
+                
+                const listJsonPath = folderPath ? `${folderPath}/list.json` : 'list.json';
+                const listUrl = `https://api.github.com/repos/${gitConfig.repo}/contents/${listJsonPath}`;
+                
+                // 首先尝试获取现有的list.json
+                let existingList = [];
+                let listSha = null;
+                
+                const getListRes = await fetch(listUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${gitConfig.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (getListRes.ok) {
+                    const listData = await getListRes.json();
+                    listSha = listData.sha;
+                    
+                    // 正确解码base64（处理UTF-8编码）
+                    try {
+                        const binaryString = atob(listData.content);
+                        const bytes = new Uint8Array(binaryString.length);
+                        for (let i = 0; i < binaryString.length; i++) {
+                            bytes[i] = binaryString.charCodeAt(i);
+                        }
+                        const decoder = new TextDecoder('utf-8');
+                        const jsonContent = decoder.decode(bytes);
+                        existingList = JSON.parse(jsonContent);
+                        console.log('成功读取现有list.json:', existingList);
+                    } catch (decodeError) {
+                        console.error('解码list.json失败，创建新的:', decodeError);
+                        existingList = [];
+                    }
+                } else if (getListRes.status !== 404) {
+                    console.error('获取list.json失败:', getListRes.status);
+                    return false;
+                }
+                
+                // 创建或更新博客条目
+                const blogEntry = {
+                    id: `${fileName}.md`,
+                    title: doc.title,
+                    desc: getFirstParagraph(doc.content),
+                    date: doc.date || new Date().toISOString().split('T')[0],
+                    category: doc.category || '未分类'
+                };
+                
+                // 查找是否已存在相同的条目
+                const existingIndex = existingList.findIndex(item =>
+                    item.id === blogEntry.id || item.title === blogEntry.title
+                );
+                
+                if (existingIndex !== -1) {
+                    // 更新现有条目
+                    existingList[existingIndex] = blogEntry;
+                    console.log('更新现有条目:', blogEntry.title);
+                } else {
+                    // 添加新条目
+                    existingList.push(blogEntry);
+                    console.log('添加新条目:', blogEntry.title);
+                }
+                
+                // 正确编码为UTF-8
+                const jsonString = JSON.stringify(existingList, null, 2);
+                const encoder = new TextEncoder();
+                const utf8Bytes = encoder.encode(jsonString);
+                
+                // 将UTF-8字节数组转换为base64
+                let binaryString = '';
+                for (let i = 0; i < utf8Bytes.length; i++) {
+                    binaryString += String.fromCharCode(utf8Bytes[i]);
+                }
+                const jsonBase64 = btoa(binaryString);
+                
+                // 上传更新后的list.json
+                const putListRes = await fetch(listUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${gitConfig.token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({
+                        message: `Update list.json: ${doc.title}`,
+                        content: jsonBase64,
+                        sha: listSha || undefined,
+                        encoding: 'base64'
+                    })
+                });
+                
+                if (putListRes.ok) {
+                    console.log('list.json 更新成功');
+                    return true;
+                } else {
+                    const errorData = await putListRes.json();
+                    console.error('list.json 更新失败:', errorData);
+                    return false;
+                }
+            } catch (error) {
+                console.error('更新list.json时出错:', error);
+                return false;
+            }
+        }
+        
+        // 辅助函数：获取文档的第一段作为描述
+        function getFirstParagraph(content) {
+            // 移除标题和代码块
+            let text = content.replace(/^#.*$/gm, '');
+            text = text.replace(/```[\s\S]*?```/g, '');
+            text = text.replace(/`[^`]*`/g, '');
+            
+            // 按段落分割
+            const paragraphs = text.split(/\n\s*\n/);
+            
+            for (let para of paragraphs) {
+                para = para.trim();
+                if (para.length > 0 && !para.match(/^[\s\-*]*$/)) {
+                    // 清理Markdown格式
+                    para = para.replace(/[#*_~`\[\]\(\)]/g, '');
+                    para = para.replace(/\s+/g, ' ');
+                    
+                    // 限制长度
+                    if (para.length > 150) {
+                        para = para.substring(0, 150) + '...';
+                    }
+                    
+                    return para;
+                }
+            }
+            
+            return '无描述内容';
+        }
+        
+        // --- 核心视图切换函数 ---
+        function switchView(viewId, el, title) {
+            if (navigator.vibrate) navigator.vibrate(15);
+            
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            
+            const targetView = document.getElementById('view-' + viewId);
+            if (targetView) targetView.classList.add('active');
+            if (el) el.classList.add('active');
+            
+            const appTitle = document.getElementById('app-title');
+            if (appTitle) appTitle.innerText = title;
+            
+            const searchBar = document.getElementById('search-bar');
+            const categoryBar = document.getElementById('category-bar');
+            
+            if (viewId === 'home') {
+                if (searchBar) searchBar.style.display = 'flex';
+                if (categoryBar) categoryBar.style.display = 'block';
+                renderCategoryTags();
+                renderDocList();
+            } else {
+                if (searchBar) searchBar.style.display = 'none';
+                if (categoryBar) categoryBar.style.display = 'none';
+                document.getElementById('git-token').value = gitConfig.token;
+                document.getElementById('git-repo').value = gitConfig.repo;
+                document.getElementById('git-folder').value = gitConfig.folder;
+            }
+            
+            toggleDrawer(false);
+        }
+        
+        // --- 通用 UI 交互 ---
+        function handleRipple(e) {
+            if (navigator.vibrate) navigator.vibrate(12);
+            const el = e.currentTarget;
+            const rect = el.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            if (clientX === undefined) return;
+            const ripple = document.createElement("span");
+            const size = Math.max(rect.width, rect.height);
+            ripple.className = "ripple-span";
+            ripple.style.width = ripple.style.height = size + "px";
+            ripple.style.left = (clientX - rect.left - size / 2) + "px";
+            ripple.style.top = (clientY - rect.top - size / 2) + "px";
+            el.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+        
+        function toggleDrawer(open) {
+            const drawer = document.getElementById('nav-drawer');
+            const scrim = document.getElementById('nav-scrim');
+            if (drawer) drawer.classList.toggle('open', open);
+            if (scrim) scrim.classList.toggle('show', open);
+        }
+        
+        function handleScrimClick() {
+            toggleDrawer(false);
+            closeActionSheet();
+        }
+        
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            const newTheme = isDark ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            
+            // 切换markdown主题
+            const mdLight = document.getElementById('markdown-light');
+            const mdDark = document.getElementById('markdown-dark');
+            if (newTheme === 'dark') {
+                mdLight.disabled = true;
+                mdDark.disabled = false;
+            } else {
+                mdLight.disabled = false;
+                mdDark.disabled = true;
+            }
+            
+            // 切换代码高亮主题
+            const hlLight = document.getElementById('highlight-light');
+            const hlDark = document.getElementById('highlight-dark');
+            if (newTheme === 'dark') {
+                hlLight.disabled = true;
+                hlDark.disabled = false;
+            } else {
+                hlLight.disabled = false;
+                hlDark.disabled = true;
+            }
+            
+            // 重新高亮所有代码块
+            setTimeout(() => {
+                document.querySelectorAll('pre code').forEach(el => {
+                    hljs.highlightElement(el);
+                });
+                // 如果是预览模式，重新生成预览
+                if (isPreviewMode) {
+                    updatePreview();
+                }
+            }, 50);
+            
+            const statusText = document.getElementById('theme-status');
+            if (statusText) statusText.innerText = isDark ? '已关闭' : '已开启';
+            
+            localStorage.setItem('m3-theme-mode', newTheme);
+        }
+        
+        function applyThemeColor(themeClass, e) {
+            if (e) handleRipple(e);
+            const themes = ['theme-green', 'theme-purple', 'theme-lime', 'theme-red', 'theme-cyan', 'theme-coffee', 'theme-pink', 'theme-grey', 'theme-gold'];
+            document.body.classList.remove(...themes);
+            if (themeClass) document.body.classList.add(themeClass);
+            document.querySelectorAll('.theme-circle').forEach(circle => {
+                circle.classList.remove('active');
+                if (circle.getAttribute('data-theme') === themeClass) circle.classList.add('active');
+            });
+            localStorage.setItem('m3-theme-color', themeClass);
+        }
+        
+        // --- 文档列表与预览 ---
+        function renderDocList() {
+            const container = document.getElementById('doc-list');
+            if (!container) return;
+            
+            const filteredDocs = currentCategory === '全部' ?
+                docs :
+                docs.filter(doc => doc.category === currentCategory);
+            
+            if (filteredDocs.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 50% 20px; color: var(--color-on-surface-variant);"><span class="material-symbols-outlined" style="font-size: 48px; opacity: 0.5;">note_add</span><div style="margin-top: 16px;">还没有文档</div></div>`;
+                return;
+            }
+            
+            container.innerHTML = filteredDocs.map((doc, index) => `
+        <div class="m3-card ripple-container ${index < 3 ? 'new-entry' : ''}" 
+             onclick="onCardClick(event, '${doc.id}')"
+             onmousedown="startLongPress('${doc.id}')" onmouseup="endLongPress()"
+             ontouchstart="startLongPress('${doc.id}')" ontouchend="endLongPress()">
+            <div class="card-meta">${doc.date} · ${doc.category}</div>
+            <h3 class="card-title">${doc.title}</h3>
+            <div class="doc-preview">${getPreviewText(doc.content)}</div>
+        </div>`).join('');
+        }
+        
+        function getPreviewText(content) {
+            return content.replace(/#{1,6}\s+/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/!\[([^\]]*)\]\([^)]+\)/g, '[图片]').replace(/`{1,3}[^`]*`{1,3}/g, '[代码]').replace(/[*_~]/g, '').substring(0, 120) + (content.length > 120 ? '...' : '');
+        }
+        
+        // --- 编辑器核心 ---
+        let autoSaveTimer = null;
+        
+        function openEditor(id) {
+            currentDocId = id.toString();
+            const doc = docs.find(d => d.id.toString() === currentDocId);
+            if (!doc) return;
+            
+            document.getElementById('md-input').value = doc.content;
+            document.getElementById('detail-panel').classList.add('open');
+            showEditorMode();
+            updatePreview();
+            
+            // 启动自动保存
+            startAutoSave();
+        }
+        
+        function closeEditor() {
+            saveCurrentDoc();
+            document.getElementById('detail-panel').classList.remove('open');
+            currentDocId = null;
+            isPreviewMode = false;
+            
+            // 停止自动保存
+            stopAutoSave();
+        }
+        
+        function startAutoSave() {
+            // 清除已有的定时器
+            stopAutoSave();
+            
+            // 设置新的定时器
+            autoSaveTimer = setInterval(() => {
+                if (currentDocId) {
+                    saveCurrentDoc();
+                }
+            }, 5000); // 5秒
+        }
+        
+        function stopAutoSave() {
+            if (autoSaveTimer) {
+                clearInterval(autoSaveTimer);
+                autoSaveTimer = null;
+            }
+        }
+        
+        function saveCurrentDoc() {
+            if (!currentDocId) return;
+            const doc = docs.find(d => d.id.toString() === currentDocId);
+            if (!doc) return;
+            const content = document.getElementById('md-input').value;
+            const firstLine = content.split('\n')[0] || '未命名文档';
+            doc.title = firstLine.replace(/^#+\s*/, '').trim() || '未命名文档';
+            doc.content = content;
+            doc.updated = Date.now();
+            doc.date = new Date().toISOString().split('T')[0];
+            saveToStorage();
+        }
+        
+        function updatePreview() {
+            const val = document.getElementById('md-input').value;
+            document.getElementById('md-preview').innerHTML = marked.parse(val);
+            document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+        }
+        
+        function togglePreview() {
+            isPreviewMode = !isPreviewMode;
+            document.getElementById('md-input').style.display = isPreviewMode ? 'none' : 'block';
+            document.getElementById('md-preview').style.display = isPreviewMode ? 'block' : 'none';
+            document.getElementById('preview-btn').innerHTML = `<span class="material-symbols-outlined">${isPreviewMode ? 'edit' : 'visibility'}</span>`;
+            if (isPreviewMode) updatePreview();
+        }
+        
+        function showEditorMode() {
+            document.getElementById('md-input').style.display = 'block';
+            document.getElementById('md-preview').style.display = 'none';
+            document.getElementById('preview-btn').innerHTML = '<span class="material-symbols-outlined">visibility</span>';
+            isPreviewMode = false;
+        }
+        
+        // --- 长按与操作菜单 ---
+        function startLongPress(id) {
+            pressTimer = setTimeout(() => {
+                selectedDocId = id.toString();
+                openActionSheet();
+                if (navigator.vibrate) navigator.vibrate(40);
+            }, 600);
+        }
+        
+        function endLongPress() {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        }
+        
+        function onCardClick(e, id) {
+            if (document.getElementById('bottom-sheet').classList.contains('open')) {
+                closeActionSheet();
+                return;
+            }
+            handleRipple(e);
+            setTimeout(() => openEditor(id), 200);
+        }
+        
+        function openActionSheet() {
+            const doc = docs.find(d => d.id.toString() === selectedDocId);
+            if (!doc) return;
+            document.getElementById('sheet-title').textContent = `操作：${doc.title}`;
+            document.getElementById('bottom-sheet').classList.add('open');
+            document.getElementById('nav-scrim').classList.add('show');
+        }
+        
+        function closeActionSheet() {
+            document.getElementById('bottom-sheet').classList.remove('open');
+            document.getElementById('nav-scrim').classList.remove('show');
+            selectedDocId = null;
+        }
+        
+        // --- 核心 CRUD 功能 ---
+        function createNewDoc() {
+            const newDoc = {
+                id: Date.now().toString(),
+                title: '新文档',
+                content: '# 新文档\n\n开始记录你的灵感...',
+                category: '未分类',
+                date: new Date().toISOString().split('T')[0],
+                updated: Date.now()
+            };
+            docs.unshift(newDoc);
+            saveToStorage();
+            openEditor(newDoc.id);
+        }
+        
+        function deleteDoc() {
+            const idToDelete = selectedDocId;
+            if (!idToDelete) return;
+            const doc = docs.find(d => d.id.toString() === idToDelete);
+            if (!doc) return;
+            
+            closeActionSheet();
+            const overlay = document.createElement('div');
+            overlay.className = 'm3-dialog-overlay';
+            overlay.innerHTML = `
+        <div class="m3-dialog">
+            <div class="m3-dialog-title" style="color: #ba1a1a;">确认删除？</div>
+            <div style="margin: 16px 0;">确定要删除 "${doc.title}" 吗？此操作无法撤销。</div>
+            <div class="m3-dialog-actions">
+                <button class="m3-button m3-button-text" id="delete-cancel">取消</button>
+                <button class="m3-button" id="delete-confirm" style="background: #ba1a1a; color: white;">删除</button>
+            </div>
+        </div>`;
+            document.body.appendChild(overlay);
+            
+            document.getElementById('delete-cancel').onclick = () => overlay.remove();
+            document.getElementById('delete-confirm').onclick = () => {
+                docs = docs.filter(d => d.id.toString() !== idToDelete);
+                saveToStorage();
+                if (currentDocId === idToDelete) {
+                    document.getElementById('detail-panel').classList.remove('open');
+                    currentDocId = null;
+                }
+                overlay.remove();
+                showToast('已删除');
+            };
+        }
+        
+        function renameDoc() {
+            const idToRename = selectedDocId;
+            if (!idToRename) return;
+            const doc = docs.find(d => d.id.toString() === idToRename);
+            if (!doc) return;
+            
+            closeActionSheet();
+            const overlay = document.createElement('div');
+            overlay.className = 'm3-dialog-overlay';
+            overlay.innerHTML = `
+        <div class="m3-dialog">
+            <div class="m3-dialog-title">重命名文档</div>
+            <input type="text" id="rename-input" class="m3-input" value="${doc.title}" placeholder="输入新标题">
+            <div class="m3-dialog-actions">
+                <button class="m3-button m3-button-text" id="rename-cancel">取消</button>
+                <button class="m3-button m3-button-primary" id="rename-confirm">确定</button>
+            </div>
+        </div>`;
+            document.body.appendChild(overlay);
+            
+            const input = document.getElementById('rename-input');
+            input.focus();
+            input.select();
+            
+            document.getElementById('rename-cancel').onclick = () => overlay.remove();
+            document.getElementById('rename-confirm').onclick = () => {
+                const newTitle = input.value.trim();
+                if (newTitle) {
+                    doc.title = newTitle;
+                    saveToStorage();
+                    showToast('已重命名');
+                }
+                overlay.remove();
+            };
+            
+            input.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    document.getElementById('rename-confirm').click();
+                }
+            };
+        }
+        
+        function changeCategory() {
+            const idToChange = selectedDocId;
+            if (!idToChange) return;
+            const doc = docs.find(d => d.id.toString() === idToChange);
+            if (!doc) return;
+            
+            const categories = [...new Set(docs.map(d => d.category || '未分类').filter(c => c !== '全部'))];
+            
+            closeActionSheet();
+            const overlay = document.createElement('div');
+            overlay.className = 'm3-dialog-overlay';
+            overlay.innerHTML = `
+        <div class="m3-dialog">
+            <div class="m3-dialog-title">修改分类</div>
+            <input type="text" id="category-input" class="m3-input" value="${doc.category}" placeholder="输入分类或从列表选择">
+            <div style="margin: 8px 0; font-size: 12px; color: var(--color-on-surface-variant);">现有分类：${categories.join(', ')}</div>
+            <div class="m3-dialog-actions">
+                <button class="m3-button m3-button-text" id="category-cancel">取消</button>
+                <button class="m3-button m3-button-primary" id="category-confirm">确定</button>
+            </div>
+        </div>`;
+            document.body.appendChild(overlay);
+            
+            const input = document.getElementById('category-input');
+            input.focus();
+            input.select();
+            
+            document.getElementById('category-cancel').onclick = () => overlay.remove();
+            document.getElementById('category-confirm').onclick = () => {
+                const newCategory = input.value.trim() || '未分类';
+                doc.category = newCategory;
+                saveToStorage();
+                showToast('分类已更新');
+                overlay.remove();
+            };
+            
+            input.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    document.getElementById('category-confirm').click();
+                }
+            };
+        }
+        
+        // --- 辅助功能 ---
+        function saveToStorage() {
+            localStorage.setItem('tian_md_docs', JSON.stringify(docs));
+            renderDocList();
+            renderCategoryTags();
+            updateStats();
+        }
+        
+        function updateStats() {
+            const el = document.getElementById('stat-count');
+            if (el) el.innerText = `共 ${docs.length} 个文档`;
+        }
+        
+        function renderCategoryTags() {
+            const container = document.getElementById('category-tags');
+            if (!container) return;
+            
+            const uniqueCategories = [...new Set(docs.map(d => d.category || '未分类'))].sort();
+            const categories = ['全部', ...uniqueCategories];
+            
+            container.innerHTML = categories.map(cat => {
+                const count = cat === '全部' ? docs.length : docs.filter(d => d.category === cat).length;
+                return `<div class="category-tag ${currentCategory === cat ? 'active' : ''}" onclick="setCategory('${cat}')">${cat} (${count})</div>`;
+            }).join('');
+        }
+        
+        function setCategory(cat) {
+            currentCategory = cat;
+            renderDocList();
+            renderCategoryTags();
+        }
+        
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.textContent = msg;
+            toast.style.cssText = `position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:var(--color-primary-container); color:var(--color-on-primary-container); padding:12px 24px; border-radius:24px; z-index:9999; font-size:14px;`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+        
+        function runSearch() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = docs.filter(d => d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q));
+            document.getElementById('doc-list').innerHTML = filtered.map(doc => `
+        <div class="m3-card ripple-container" onclick="onCardClick(event, '${doc.id}')">
+            <div class="card-meta">${doc.date} · ${doc.category}</div>
+            <h3 class="card-title">${doc.title}</h3>
+            <div class="doc-preview">${getPreviewText(doc.content)}</div>
+        </div>`).join('');
+        }
+        
+        // --- 文本插入功能 ---
+        function insertText(tag, e) {
+            handleRipple(e);
+            const textarea = document.getElementById('md-input');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            
+            if (tag === '```\n\n```') {
+                const selection = text.substring(start, end);
+                textarea.value = text.substring(0, start) + '```\n' + selection + '\n```' + text.substring(end);
+                textarea.selectionStart = start + 4;
+                textarea.selectionEnd = start + 4 + selection.length;
+            } else {
+                textarea.value = text.substring(0, start) + tag + text.substring(end);
+                textarea.selectionStart = textarea.selectionEnd = start + tag.length;
+            }
+            
+            textarea.focus();
+            if (isPreviewMode) updatePreview();
+        }
+        
+        // --- 随机漫游功能 ---
+        function randomDoc() {
+            if (docs.length === 0) return;
+            const randomIndex = Math.floor(Math.random() * docs.length);
+            const randomDoc = docs[randomIndex];
+            toggleDrawer(false);
+            setTimeout(() => openEditor(randomDoc.id), 300);
+        }
+        
+        // --- 导出功能 ---
+        function exportCurrentDoc() {
+            if (!currentDocId) return;
+            const doc = docs.find(d => d.id.toString() === currentDocId);
+            if (!doc) return;
+            
+            const blob = new Blob([doc.content], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${doc.title.replace(/[\/\\?%*:|"<>]/g, '-')}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('已导出');
+        }
+        
+        // --- 批量同步到GitHub ---
+        async function batchSyncToGitHub() {
+            if (!gitConfig.token || !gitConfig.repo) {
+                showToast('请先配置 GitHub');
+                return;
+            }
+            
+            if (docs.length === 0) {
+                showToast('没有文档可同步');
+                return;
+            }
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'm3-dialog-overlay';
+            overlay.innerHTML = `
+    <div class="m3-dialog">
+        <div class="m3-dialog-title" style="color: var(--color-primary);">确认批量同步</div>
+        <div style="margin: 16px 0;">确定要同步所有 ${docs.length} 个文档到 GitHub 吗？</div>
+        <div class="m3-dialog-actions">
+            <button class="m3-button m3-button-text" id="batch-sync-cancel">取消</button>
+            <button class="m3-button m3-button-primary" id="batch-sync-confirm">确定同步</button>
+        </div>
+    </div>`;
+            document.body.appendChild(overlay);
+            
+            return new Promise((resolve) => {
+                document.getElementById('batch-sync-cancel').onclick = () => {
+                    overlay.remove();
+                    resolve(false);
+                };
+                
+                document.getElementById('batch-sync-confirm').onclick = async () => {
+                    overlay.remove();
+                    
+                    showToast('开始批量同步...');
+                    
+                    let successCount = 0;
+                    let failCount = 0;
+                    
+                    for (const doc of docs) {
+                        try {
+                            const cleanFileName = doc.title.replace(/[\/\\?%*:|"<>]/g, '-').replace(/\s+/g, '-');
+                            
+                            let folderPath = (gitConfig.folder || '').trim();
+                            folderPath = folderPath.replace(/^\/+|\/+$/g, '');
+                            
+                            const fullPath = folderPath ? `${folderPath}/${cleanFileName}.md` : `${cleanFileName}.md`;
+                            
+                            const url = `https://api.github.com/repos/${gitConfig.repo}/contents/${fullPath}`;
+                            
+                            let sha = null;
+                            const getRes = await fetch(url, {
+                                headers: {
+                                    'Authorization': `Bearer ${gitConfig.token}`,
+                                    'Accept': 'application/vnd.github.v3+json'
+                                }
+                            });
+                            
+                            if (getRes.ok) {
+                                const data = await getRes.json();
+                                sha = data.sha;
+                            } else if (getRes.status !== 404) {
+                                throw new Error(`检查文件失败: ${getRes.status}`);
+                            }
+                            
+                            const contentUtf8 = unescape(encodeURIComponent(doc.content));
+                            const contentBase64 = btoa(contentUtf8);
+                            
+                            const putRes = await fetch(url, {
+                                method: 'PUT',
+                                headers: {
+                                    'Authorization': `Bearer ${gitConfig.token}`,
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/vnd.github.v3+json'
+                                },
+                                body: JSON.stringify({
+                                    message: `Batch sync from TTQ MD: ${doc.title}`,
+                                    content: contentBase64,
+                                    sha: sha || undefined
+                                })
+                            });
+                            
+                            if (putRes.ok) {
+                                successCount++;
+                            } else {
+                                failCount++;
+                            }
+                            
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                            
+                        } catch (error) {
+                            failCount++;
+                        }
+                    }
+                    
+                    showToast(`批量同步完成: ${successCount} 成功, ${failCount} 失败`);
+                    resolve(true);
+                };
+            });
+        }
+        
+        // --- 初始化 ---
+        window.onload = function() {
+            const savedColor = localStorage.getItem('m3-theme-color');
+            const savedMode = localStorage.getItem('m3-theme-mode');
+            if (savedColor) applyThemeColor(savedColor);
+            if (savedMode === 'dark') toggleTheme();
+            
+            marked.setOptions({ breaks: true, gfm: true });
+            renderDocList();
+            renderCategoryTags();
+            updateStats();
+            
+            setTimeout(() => {
+                const aboutContainer = document.querySelector('.about-container');
+                if (aboutContainer && !document.getElementById('batch-sync-btn')) {
+                    const batchSyncHtml = `
+                    <div class="about-section">
+                        <div class="about-section-title"><span class="material-symbols-outlined">sync</span> 批量同步</div>
+                        <p style="font-size:12px; margin-bottom:10px; opacity:0.7;">一键同步所有文档到配置的GitHub文件夹</p>
+                        <button id="batch-sync-btn" class="m3-button m3-button-primary" style="width:100%" onclick="batchSyncToGitHub()">批量同步所有文档</button>
+                    </div>`;
+                    
+                    const gitConfigSection = document.querySelector('.about-section:nth-child(2)');
+                    if (gitConfigSection) {
+                        gitConfigSection.insertAdjacentHTML('afterend', batchSyncHtml);
+                    }
+                }
+            }, 100);
+            
+            document.getElementById('md-input').addEventListener('input', () => {
+                if (isPreviewMode) updatePreview();
+            });
+        };
+    </script>
+</body>
+
+</html>
