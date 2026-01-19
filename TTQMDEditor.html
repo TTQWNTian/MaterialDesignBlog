@@ -452,7 +452,7 @@
         .view {
             position: absolute;
             inset: 0;
-            padding: 0 var(--space-m) var(--space-m);
+            padding: 0 var(--space-m);
             overflow-y: auto;
             display: none;
         }
@@ -645,6 +645,20 @@
             overflow-x: auto;
             min-height: 56px;
             -webkit-overflow-scrolling: touch;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 浏览模式隐藏快捷键栏 */
+        #detail-panel:has(#md-preview[style*="block"]) #editor-toolbar {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            display: flex !important;
+            height: 0;
+            min-height: 0;
+            padding: 0 16px;
+            overflow: hidden;
         }
         
         .toolbar-btn {
@@ -1073,7 +1087,7 @@
                     <span class="material-symbols-outlined">info</span>
                     <span>版本信息</span>
                 </div>
-                <span class="item-status">v0.0.1</span>
+                <span class="item-status">v0.0.2</span>
             </div>
         </div>
     </aside>
@@ -1160,7 +1174,7 @@
                     <div class="about-section-title">版本信息</div>
                     <div class="info-row">
                         <span class="info-label">当前版本</span>
-                        <span class="info-value">v0.0.1</span>
+                        <span class="info-value">v0.0.2</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">开发者</span>
@@ -1268,7 +1282,7 @@
         {
             id: "1",
             title: '欢迎使用 TTQ MD',
-            content: '# 欢迎使用 TTQ MD 编辑器\n\n这是一个由[Tian](https://github.com/TTQWNTian)制作，基于 Material Design 3 样式的 Markdown 编辑器。\n\n点击右上角"+"按钮创建新文档，或点击现有文档卡片进行编辑。\n\n### 功能特色\n- **多主题支持**：多种颜色主题和深色模式\n- **本地存储**：所有文档保存在浏览器本地\n- **全文搜索**：快速查找文档内容\n- **分类管理**：按标签组织文档\n- **GitHub 同步**：支持备份到云端指定文件夹（需配置）\n\n## Markdown 基础语法\n\n### 标题\n```\n# 一级标题\n## 二级标题\n### 三级标题\n```\n\n### 强调\n```\n**粗体文本**\n*斜体文本*\n~~删除线文本~~\n```\n\n### 列表\n```\n- 无序列表项\n- 另一个列表项\n\n1. 有序列表项\n2. 第二个项目\n```\n\n### 代码\n```javascript\n// 代码块\nfunction hello() {\n    console.log("Hello, Markdown!");\n}\n```\n\n开始创作吧！',
+            content: '# 欢迎使用 TTQ MD 编辑器\n\n这是一个由[Tian](https://github.com/TTQWNTian)制作，基于 Material Design 3 样式的 Markdown 编辑器。\n\n点击右上角"+"按钮创建新文档，或点击现有文档卡片进行编辑。\n\n### 功能特色\n- **多主题支持**：多种颜色主题和深色模式\n- **本地存储**：所有文档保存在浏览器本地\n- **全文搜索**：快速查找文档内容\n- **分类管理**：按标签组织文档\n- **GitHub 同步**：支持备份到云端指定文件夹（需配置）\n- **自动添加LIST**：支持本编辑器同作者制作的[MaterialDesignBlog](https://github.com/TTQWNTian/MaterialDesignBlog)博客模版自动化添加 `list.json` 数据，默认关闭，可把代码中的 `ENABLE_LIST_JSON_UPDATE` 常量从false改为true启动该功能\n\n## Markdown 基础语法\n\n### 标题\n```\n# 一级标题\n## 二级标题\n### 三级标题\n```\n\n### 强调\n```\n**粗体文本**\n*斜体文本*\n~~删除线文本~~\n```\n\n### 列表\n```\n- 无序列表项\n- 另一个列表项\n\n1. 有序列表项\n2. 第二个项目\n```\n\n### 代码\n```javascript\n// 代码块\nfunction hello() {\n    console.log("Hello, Markdown!");\n}\n```\n\n开始创作吧！',
             category: '指南',
             date: '2026-1-18',
             updated: Date.now()
