@@ -1221,7 +1221,7 @@
             <button class="toolbar-btn ripple-container" onclick="insertText('### ', event)">
                 <span style="font-weight:bold; font-size:14px;">H3</span>
             </button>
-            <button class="toolbar-btn ripple-container" onclick="insertText('**', event)">
+            <button class="toolbar-btn ripple-container" onclick="insertText('****', event)">
                 <span style="font-weight:bold;">B</span>
             </button>
             <button class="toolbar-btn ripple-container" onclick="insertText('- ', event)">
@@ -2051,6 +2051,26 @@
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
             const text = textarea.value;
+            const selection = text.substring(start, end);
+            
+            if (tag === '****') {
+                if (selection) {
+                    // 有选中文本：用**包装选中文本
+                    const newText = '**' + selection + '**';
+                    textarea.value = text.substring(0, start) + newText + text.substring(end);
+                    textarea.selectionStart = start + 2;
+                    textarea.selectionEnd = start + 2 + selection.length;
+                } else {
+                    // 没有选中文本：插入****，光标在中间
+                    const newText = '****';
+                    textarea.value = text.substring(0, start) + newText + text.substring(end);
+                    textarea.selectionStart = start + 2;
+                    textarea.selectionEnd = start + 2;
+                }
+                textarea.focus();
+                if (isPreviewMode) updatePreview();
+                return;
+            }
             
             if (tag === '```\n\n```') {
                 const selection = text.substring(start, end);
