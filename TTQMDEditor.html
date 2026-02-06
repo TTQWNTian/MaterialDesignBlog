@@ -30,6 +30,7 @@
             --color-scrim: rgba(0, 0, 0, 0.4);
             --color-ripple: rgba(0, 97, 164, 0.12);
             
+            --radius-small: 2px;
             --radius-s: 8px;
             --radius-m: 12px;
             --radius-l: 16px;
@@ -736,6 +737,56 @@
             max-width: 100%;
         }
         
+        /* md复选框样式 */
+        .markdown-body input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-small);
+            background: var(--color-surface);
+            margin: 0 10px 0 -20px;
+            vertical-align: middle;
+            position: relative;
+        }
+        
+        .markdown-body input[type="checkbox"]:checked {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        
+        .markdown-body input[type="checkbox"]:checked::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--color-surface);
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        /* 隐藏有复选框的列表点 */
+        .markdown-body li:has(input[type="checkbox"]) {
+            list-style-type: none;
+        }
+        
+        .markdown-body li {
+            padding-left: 7px;
+        }
+        
+        .markdown-body ol {
+            padding-left: 37px;
+        }
+        .markdown-body ol li {
+            padding-left: 3px;
+        }
+        
+        li::marker {
+            color: var(--color-primary);
+        }
+        
         #bottom-sheet {
             position: fixed;
             bottom: 0;
@@ -1089,7 +1140,7 @@
                     <span class="material-symbols-outlined">info</span>
                     <span>版本信息</span>
                 </div>
-                <span class="item-status">v0.1.0</span>
+                <span class="item-status">v0.1.1</span>
             </div>
         </div>
     </aside>
@@ -1176,7 +1227,7 @@
                     <div class="about-section-title">版本信息</div>
                     <div class="info-row">
                         <span class="info-label">当前版本</span>
-                        <span class="info-value">v0.1.0</span>
+                        <span class="info-value">v0.1.1</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">开发者</span>
