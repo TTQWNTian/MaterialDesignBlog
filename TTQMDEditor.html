@@ -783,6 +783,7 @@
         .markdown-body ol {
             padding-left: 37px;
         }
+        
         .markdown-body ol li {
             padding-left: 3px;
         }
@@ -1140,7 +1141,7 @@
                     <span class="material-symbols-outlined">info</span>
                     <span>版本信息</span>
                 </div>
-                <span class="item-status">v0.1.1</span>
+                <span class="item-status">v0.2.0</span>
             </div>
         </div>
     </aside>
@@ -1227,7 +1228,7 @@
                     <div class="about-section-title">版本信息</div>
                     <div class="info-row">
                         <span class="info-label">当前版本</span>
-                        <span class="info-value">v0.1.1</span>
+                        <span class="info-value">v0.2.0</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">开发者</span>
@@ -1966,9 +1967,9 @@
             const doc = docs.find(d => d.id.toString() === currentDocId);
             if (!doc) return;
             const content = document.getElementById('md-input').value;
-            const firstLine = content.split('\n')[0] || '未命名文档';
-            doc.title = firstLine.replace(/^#+\s*/, '').trim() || '未命名文档';
+            
             doc.content = content;
+            doc.updated = Date.now();
             doc.updated = Date.now();
             doc.date = new Date().toISOString().split('T')[0];
             saveToStorage();
@@ -2038,17 +2039,46 @@
         
         // --- 核心 CRUD 功能 ---
         function createNewDoc() {
-            const newDoc = {
-                id: Date.now().toString(),
-                title: '新文档',
-                content: '# 新文档\n\n开始记录你的灵感...',
-                category: '未分类',
-                date: new Date().toISOString().split('T')[0],
-                updated: Date.now()
+            // 询问用户输入标题
+            const overlay = document.createElement('div');
+            overlay.className = 'm3-dialog-overlay';
+            overlay.innerHTML = `
+                <div class="m3-dialog">
+                    <div class="m3-dialog-title">新建文档</div>
+                    <input type="text" id="new-doc-title" class="m3-input" value="未命名文档" placeholder="输入文档标题">
+                    <div class="m3-dialog-actions">
+                        <button class="m3-button m3-button-text" id="new-doc-cancel">取消</button>
+                        <button class="m3-button m3-button-primary" id="new-doc-confirm">创建</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(overlay);
+            
+            const input = document.getElementById('new-doc-title');
+            input.focus();
+            input.select();
+            
+            document.getElementById('new-doc-cancel').onclick = () => overlay.remove();
+            document.getElementById('new-doc-confirm').onclick = () => {
+                const title = input.value.trim() || '未命名文档';
+                const newDoc = {
+                    id: Date.now().toString(),
+                    title: title,
+                    content: `# ${title}\n\n开始记录你的灵感...`,
+                    category: '未分类',
+                    date: new Date().toISOString().split('T')[0],
+                    updated: Date.now()
+                };
+                docs.unshift(newDoc);
+                saveToStorage();
+                openEditor(newDoc.id);
+                overlay.remove();
             };
-            docs.unshift(newDoc);
-            saveToStorage();
-            openEditor(newDoc.id);
+            
+            input.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    document.getElementById('new-doc-confirm').click();
+                }
+            };
         }
         
         function deleteDoc() {
