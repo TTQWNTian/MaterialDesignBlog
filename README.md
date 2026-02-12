@@ -1,3 +1,18 @@
-![favicon](favicon.png)
-# MaterialDesignBlog
-Material Design样式的博客模版
+# MaterialDesignBlog   
+![favicon](favicon.png)   
+Material Design样式的博客模版。
+
+---
+
+博客内容使用 `Markdown` 书写，MD渲染是使用 `github` 的样式，在关键处修改为 `Material Design` 的风格。   
+博客模版是静态的网站，要添加博客需要在 `list.json` 文件中添加信息，代码如下：
+```json
+[
+  { "id": "你的博客文件1.md", "title": "博客标题1", "desc": "显示在标题下的博客说明", "date": "2026-01-17", "category": "分类标签" },
+  { "id": "你的博客文件2.md", "title": "博客标题2", "desc": "显示在标题下的博客说明", "date": "2026-01-18", "category": "标签分类" }
+]
+
+```
+每次更新在后面加一行就行（别忘了在上一个的结尾加上 `,` ）。   
+
+也可使用本模版下的 `TTQMDEditor.html` 来编写博客，上传到 **Github** 时会自动修改 `list.json` 内容。
